@@ -6,13 +6,13 @@
 #include "beatsaber-hook/shared/utils/utils.h"
 #include <stdlib.h>
 
-MAKE_HOOK_OFFSETLESS(LevelCompletionResultsHelper_ProcessScore, void, Il2CppObject* self, Il2CppObject* playerData, Il2CppObject* playerLevelStats, Il2CppObject* levelCompletionResults, Il2CppObject* difficultyBeatmap, Il2CppObject* platformLeaderboardsModel) {
+MAKE_HOOK_OFFSETLESS(PlatformLeaderboardsModel_UploadScore, void, Il2CppObject *self, Il2CppObject* scoreData, Il2CppObject* completionHandler) {
     if (!bs_utils::Submission::getEnabled()) {
         getLogger().debug("Blocking vanilla score processing!");
         return;
     }
     getLogger().debug("Allowing vanilla score processing!");
-    LevelCompletionResultsHelper_ProcessScore(self, playerData, playerLevelStats, levelCompletionResults, difficultyBeatmap, platformLeaderboardsModel);
+    PlatformLeaderboardsModel_UploadScore(self, scoreData, completionHandler);
 }
 
 namespace bs_utils {
@@ -22,7 +22,7 @@ namespace bs_utils {
 
     void Submission::init() {
         if (!initialized) {
-            INSTALL_HOOK_OFFSETLESS(getLogger(), LevelCompletionResultsHelper_ProcessScore, il2cpp_utils::FindMethodUnsafe("", "LevelCompletionResultsHelper", "ProcessScore", 5));
+            INSTALL_HOOK_OFFSETLESS(getLogger(), PlatformLeaderboardsModel_UploadScore, il2cpp_utils::FindMethodUnsafe("", "PlatformLeaderboardsModel", "UploadScore", 2));
             initialized = true;
         }
     }
